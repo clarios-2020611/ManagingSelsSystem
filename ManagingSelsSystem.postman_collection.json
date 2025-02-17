@@ -1,0 +1,552 @@
+{
+	"info": {
+		"_postman_id": "d7eaab92-08a8-4850-a67f-966b472e47aa",
+		"name": "ManagingSelsSystem",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "37978807"
+	},
+	"item": [
+		{
+			"name": "auth",
+			"item": [
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "name",
+									"value": "Cristian",
+									"type": "text"
+								},
+								{
+									"key": "username",
+									"value": "clarios2",
+									"type": "text"
+								},
+								{
+									"key": "lastname",
+									"value": "Larios",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "clarios-1234@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "Lirios123/*",
+									"type": "text"
+								},
+								{
+									"key": "role",
+									"value": "ADMIN",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{domine}}/register",
+							"host": [
+								"{{domine}}"
+							],
+							"path": [
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let response = pm.response.json();\r",
+									"pm.environment.set(\"authToken\", response.token);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "userLoggin",
+									"value": "clarios2",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "Lirios123/*",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{domine}}/login",
+							"host": [
+								"{{domine}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Admin",
+			"item": [
+				{
+					"name": "Category",
+					"item": [
+						{
+							"name": "SaveCategory",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{authToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "name",
+											"value": "Health & Beauty",
+											"type": "text"
+										},
+										{
+											"key": "description",
+											"value": "Personal care items, cosmetics, vitamins, and wellness products",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{domine}}/v1/admin/addCategory",
+									"host": [
+										"{{domine}}"
+									],
+									"path": [
+										"v1",
+										"admin",
+										"addCategory"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetAll",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{authToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{domine}}/v1/admin/getAll",
+									"host": [
+										"{{domine}}"
+									],
+									"path": [
+										"v1",
+										"admin",
+										"getAll"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetOne",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{authToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "id",
+											"value": "67af48caf59d000d5a66fdad",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{domine}}/v1/admin/getCategory",
+									"host": [
+										"{{domine}}"
+									],
+									"path": [
+										"v1",
+										"admin",
+										"getCategory"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "UpdateCategory",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{authToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "id",
+											"value": "67af54e40eb3e2f671ff4164",
+											"type": "text"
+										},
+										{
+											"key": "name",
+											"value": "Perifericos",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "description",
+											"value": "Personal care items, cosmetics, vitamins, and wellness products",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{domine}}/v1/admin/updateCategory",
+									"host": [
+										"{{domine}}"
+									],
+									"path": [
+										"v1",
+										"admin",
+										"updateCategory"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "DeleteCategory",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{authToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "id",
+											"value": "67b140ac276253fe58fb97f5",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{domine}}/v1/admin/deleteCategory",
+									"host": [
+										"{{domine}}"
+									],
+									"path": [
+										"v1",
+										"admin",
+										"deleteCategory"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Product",
+					"item": [
+						{
+							"name": "SaveProduct",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{authToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "name",
+											"value": "Vitamin C Serum",
+											"type": "text"
+										},
+										{
+											"key": "description",
+											"value": "Anti-aging facial serum with hyaluronic acid",
+											"type": "text"
+										},
+										{
+											"key": "prace",
+											"value": "45",
+											"type": "text"
+										},
+										{
+											"key": "stock",
+											"value": "150",
+											"type": "text"
+										},
+										{
+											"key": "category",
+											"value": "67af4c0c0eadad1e9b00d18c",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{domine}}/v1/admin/CreateProduct",
+									"host": [
+										"{{domine}}"
+									],
+									"path": [
+										"v1",
+										"admin",
+										"CreateProduct"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetCatalogue",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{authToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{domine}}/v1/admin/getCatalogue",
+									"host": [
+										"{{domine}}"
+									],
+									"path": [
+										"v1",
+										"admin",
+										"getCatalogue"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetProduct",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{authToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "id",
+											"value": "67af4e8a0eb3e2f671ff413d",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{domine}}/v1/admin/getProduct",
+									"host": [
+										"{{domine}}"
+									],
+									"path": [
+										"v1",
+										"admin",
+										"getProduct"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "updateProduct",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{authToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "id",
+											"value": "67af4e8a0eb3e2f671ff413d",
+											"type": "text"
+										},
+										{
+											"key": "description",
+											"value": "xd",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{domine}}/v1/admin/updateProduct",
+									"host": [
+										"{{domine}}"
+									],
+									"path": [
+										"v1",
+										"admin",
+										"updateProduct"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "DeleteProduct",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{authToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "id",
+											"value": "67af4f890eb3e2f671ff414c",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{domine}}/v1/admin/deleteProduct",
+									"host": [
+										"{{domine}}"
+									],
+									"path": [
+										"v1",
+										"admin",
+										"deleteProduct"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	]
+}
