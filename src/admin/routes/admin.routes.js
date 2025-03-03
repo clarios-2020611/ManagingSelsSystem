@@ -5,6 +5,7 @@ import { needId, saveCategoryValidator, saveProductsValidator, updateCategoryVal
 import { validateJwt } from "../../../middlewares/validate.jwt.js";
 import { addStock, moreSales, restProduct } from "../controllers/inventory.controller.js";
 import { createUser, deleteUser, getAll, update, updateRol } from "../controllers/user.controller.js";
+import { generateInvoiceFromCart, getInvoice, updateInvoice } from "../controllers/invoice.controller.js";
 
 const api = Router();
 
@@ -31,5 +32,10 @@ api.get('/getUsers', [validateJwt], getAll);
 api.put('/updateRol', [validateJwt], updateRol);
 api.put('/updateUser', [validateJwt], update);
 api.put('/deleteUser', [validateJwt], deleteUser);
+
+//Facturas
+api.get('/getInvoice', [validateJwt], getInvoice);
+api.post('/generateInvoice', [validateJwt], generateInvoiceFromCart);
+api.put('/updateInvoice', [validateJwt], updateInvoice);
 
 export default api;
