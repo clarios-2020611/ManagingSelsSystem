@@ -85,3 +85,16 @@ export const getAll = async (req, res) => {
         return res.status(500).send({ success: false, message: 'General error', e });
     }
 }
+
+export const getOne = async (req, res) => {
+    try {
+        let { id } = req.body;
+        objectIdValid(id);
+        let user = User.findOne({ _id: id, status: true });
+        if (!user) return res.status(404).send({ success: false, message: 'User not found' });
+        return res.send({ success: true, message: 'User found', user });
+    } catch (e) {
+        console.error(e);
+        return res.status(500).send({ success: false, message: 'General error', e });
+    }
+}
