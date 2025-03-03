@@ -1,4 +1,4 @@
-import { Schema } from "mongoose";
+import { Schema, model } from "mongoose";
 
 const invoiceSchema = Schema(
     {
@@ -14,7 +14,7 @@ const invoiceSchema = Schema(
         },
         items: [{
             productId: {
-                type: [Schema.Types.ObjectId],
+                type: Schema.Types.ObjectId,
                 ref: 'Product',
                 required: [true, 'Products is required']
             },
