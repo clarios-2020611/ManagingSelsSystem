@@ -6,10 +6,10 @@ import Product from '../../models/product/product.model.js';
 //AGREGAR STOCK A UN PRODUCTO
 export const addStock = async (req, res) => {
     try {
-        let { stock, name } = req.body;
+        let { stock, id } = req.body;
         let movement = [stock, 'ENTRY'];
         if (stock === 0) return res.send({ success: false, message: 'Stock cannot be 0' });
-        const product = await Product.findOneAndUpdate({ name }, { $inc: { stock: stock }, $push: { movements: movement } }, { new: true });
+        const product = await Product.findOneAndUpdate( { _id: id } , { $inc: { stock: stock }, $push: { movements: movement } }, { new: true });
         if (!product) return res.status(404).send({ succes: false, message: 'Product not found' });
         return res.send({ success: true, message: 'Stock has been added successfully' });
     } catch (e) {
@@ -38,10 +38,11 @@ export const restProduct = async (req, res) => {
 //MÁS VENDIDOS
 export const moreSales = async (req, res) => {
     try {
-        let product = await Product.findOne().sort({ salesCount: -1 });
-        res.send({ succes: true, message: `Product with more sales: ${product}` });
+                                                //Ordenar de manera descendente
+        let products = await Product.findOne().sort({ salesCount: -1 }).populate('category', 'name  -_id');
+        res.send({ succes: true, message: `Product with more sales: `, products });
     } catch (e) {
         console.error(e);
         return res.status(500).send({ success: false, message: 'General error', e });
-    }
+    } 
 }
