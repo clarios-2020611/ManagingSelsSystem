@@ -16,19 +16,17 @@ export const register = async (req, res) => {
 }
 
 export const login = async (req, res) => {
-    try{
+    try {
         let { userLoggin, password } = req.body
         let user = await User.findOne(
             {
-                $or: [ 
-                    {email: userLoggin},
-                    {username: userLoggin}
+                $or: [
+                    { email: userLoggin },
+                    { username: userLoggin }
                 ]
             }
         );
-        console.log(userLoggin);
-        console.log(password);
-        if(user && await checkPassword(user.password, password)) {
+        if (user && await checkPassword(user.password, password)) {
             let loggedUser = {
                 uid: user._id,
                 name: user.name,
@@ -44,9 +42,9 @@ export const login = async (req, res) => {
                 }
             );
         }
-        return res.status(400).send({message: 'Wrong email or password'});
-    }catch(err){
+        return res.status(400).send({ message: 'Wrong email or password' });
+    } catch (err) {
         console.error(err);
-        return res.status(500).send({message: 'General error with login function'});
+        return res.status(500).send({ message: 'General error with login function' });
     }
 }

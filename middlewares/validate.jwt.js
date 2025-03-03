@@ -1,23 +1,22 @@
 import jwt from 'jsonwebtoken';
 import { findUser } from '../helpers/db.validator.js';
 
-export const validateJwt = async (req, res, next) => {
+export const validateJwt = (req, res, next) => {
+    const token = req.header('Authorization');
+
+    if (!token)
+        return res.status(401).send({ success: false, message: 'Unauthorized' });
+
     try {
-        let secretKey = process.env.SECRET_KEY;
-        let { authorization } = req.headers;
-        if (!authorization) return res.status(401).send({ message: 'Unauthorized' });
-        let user = jwt.verify(authorization, secretKey);
-        const validateUser = await findUser(user.uid);
-        if (!validateUser) return res.status(404).send(
-            {
-                success: false,
-                message: 'User not found - Unauthorized'
-            }
-        );
-        req.user = user;
-        next();
+        const jwtToken = token.startsWith('Bearer ') ? token.slice(7) : token;
+
+        const payload = jwt.verify(jwtToken, process.env.SECRET_KEY);
+
+        req.user = payload;
+
     } catch (e) {
-        console.error(e);
-        return res.status(401).send({ message: 'Invalid token or expired' });
+        return res.status(401).send({ success: false, message: 'Token not valid', error: e.message });
     }
-}
+
+    next();
+};

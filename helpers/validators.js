@@ -39,11 +39,8 @@ export const updateCategoryValidator = [
 ];
 
 export const saveProductsValidator = [
-    body('name', 'Name is required').notEmpty().matches(/^[a-zA-ZÀ-ÿ\s]+$/).withMessage('The field needs to contain letters only')
-        .custom(existProduct),
-    body('description', 'Description is required')
-        .notEmpty().matches(/^[a-zA-ZÀ-ÿ\s]+$/).withMessage('The field needs to contain letters only')
-        .isLength({ max: 255 }).withMessage('Description too long'),
+    body('name', 'Name is required').notEmpty().custom(existProduct),
+    body('description', 'Description is required').notEmpty().isLength({ max: 255 }).withMessage('Description too long'),
     body('prace', 'Prace is required').notEmpty().isNumeric().withMessage('The field needs to contain numbers only'),
     body('stock', 'Stock is required').notEmpty().isNumeric().withMessage('The field needs to contain numbers only'),
     body('category').notEmpty().custom(objectIdValid),

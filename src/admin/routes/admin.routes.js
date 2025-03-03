@@ -3,6 +3,8 @@ import { addCatogry, deleteCategory, getAllCategory, getOneCategory, updateCateg
 import { addProduct, deleteProduct, getCatalogue, getProduct, updateProduct } from "../controllers/prod.controller.js";
 import { needId, saveCategoryValidator, saveProductsValidator, updateCategoryValidator } from "../../../helpers/validators.js";
 import { validateJwt } from "../../../middlewares/validate.jwt.js";
+import { addStock, moreSales, restProduct } from "../controllers/inventory.controller.js";
+import { createUser, deleteUser, getAll, update, updateRol } from "../controllers/user.controller.js";
 
 const api = Router();
 
@@ -18,6 +20,16 @@ api.post('/CreateProduct', [validateJwt], [saveProductsValidator], addProduct);
 api.get('/getCatalogue', getCatalogue);
 api.get('/getProduct', [needId], getProduct);
 api.put('/updateProduct', [validateJwt], [updateCategoryValidator], updateProduct);
-api.put('/deleteProduct', [validateJwt], [needId], deleteProduct);
+api.delete('/deleteProduct', [validateJwt], [needId], deleteProduct);
+api.put('/addProduct', [validateJwt], addStock);
+api.put('/restProduct', [validateJwt], restProduct);
+api.put('/moreSels', [validateJwt], moreSales);
+
+//Usuarios
+api.post('/createUser', [validateJwt], createUser);
+api.get('/getUsers', [validateJwt], getAll);
+api.put('/updateRol', [validateJwt], updateRol);
+api.put('/updateUser', [validateJwt], update);
+api.put('/deleteUser', [validateJwt], deleteUser);
 
 export default api;

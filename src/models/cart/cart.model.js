@@ -17,10 +17,6 @@ const cartSchema = Schema(
                 type: Number,
                 required: true,
                 min: 1
-            },
-            price: {
-                type: Number,
-                required: true
             }
         }],
         subtotal: {
@@ -30,7 +26,6 @@ const cartSchema = Schema(
         createdAt: {
             type: Date,
             default: Date.now(),
-            expires: '7d' //Se elimina luego de una semana
         }
     }
 );

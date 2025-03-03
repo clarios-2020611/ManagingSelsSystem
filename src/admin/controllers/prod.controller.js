@@ -6,7 +6,7 @@ import Product from '../../models/product/product.model.js';
 export const getCatalogue = async (req, res) => {
     try {
         const { limit = 5, skip = 0 } = req.query;
-        const products = await Product.find().skip(skip).limit(limit).where({status: true});
+        const products = await Product.find().skip(skip).limit(limit).where({ status: true }).populate('category', '-_id -description -__v -status');
         if (products.length === 0) return res.status(404).send({ message: 'Products not found', success: false });
         return res.send({ message: `Products: ${products}`, success: true, total: products.length });
     } catch (e) {
@@ -18,7 +18,7 @@ export const getCatalogue = async (req, res) => {
 export const getProduct = async (req, res) => {
     try {
         const { id } = req.body;
-        const product = await Product.findById(id).where({status: true});
+        const product = await Product.findById(id).where({ status: true }).populate('category', '-_id -description -__v -status');
         if (!product) return res.status(404).send({ message: 'Product not found', success: false });
         return res.send({ message: 'Product found', product, success: true });
     } catch (e) {
@@ -32,7 +32,7 @@ export const updateProduct = async (req, res) => {
         const data = req.body;
         const id = data.id;
         console.log(id);
-        const product = await Product.findByIdAndUpdate(id, data, { new: true }).where({status:true});
+        const product = await Product.findByIdAndUpdate(id, data, { new: true }).where({ status: true });
         if (!product) return res.status(404).send({ message: 'Product not found', success: false });
         return res.send({ success: true, message: 'Product updated successfully', product });
     } catch (e) {
@@ -44,8 +44,7 @@ export const updateProduct = async (req, res) => {
 export const deleteProduct = async (req, res) => {
     try {
         const { id } = req.body;
-        const status = false
-        const product = await Product.findByIdAndUpdate(id, { status }, { new: true }).where({status:true});
+        const product = await Product.findByIdAndDelete(id);
         if (!product) return res.status(404).send({ message: 'Product not found', success: false });
         return res.send({ success: true, message: 'Product delete successfully', product });
     } catch (e) {

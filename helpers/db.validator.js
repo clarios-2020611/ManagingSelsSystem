@@ -63,3 +63,16 @@ export const findUser = async (id) => {
         return false
     }
 }
+
+export const availableStock = async (id, stock) => {
+    try {
+        const product = Product.findOne({ _id: id });
+        if (product.stock < stock) {
+            console.error(`Only have ${product.stock} available stock`);
+            throw new Error(`Only have ${product.stock} available stock`);
+        }
+    } catch (e) {
+        console.error(e)
+        return false
+    }
+}

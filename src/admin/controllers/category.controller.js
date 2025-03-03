@@ -1,6 +1,18 @@
 import { defaultCategory, existCategory } from '../../../helpers/db.validator.js';
 import Category from '../../models/category/category.model.js';
 
+export const createDefaultCategory = async () => {
+    try {
+        let data = { name: 'Uncategorized', description: 'Items without specific categorization' };
+        if (await Category.findOne({ name: data.name })) return console.log('Default category already exist');
+        let category = new Category(data);
+        await category.save();
+        return console.log('Default category created successfully');
+    } catch (e) {
+        console.error(e);
+    }
+}
+
 export const addCatogry = async (req, res) => {
     try {
         const data = req.body;
@@ -17,7 +29,7 @@ export const addCatogry = async (req, res) => {
 export const getAllCategory = async (req, res) => {
     try {
         const { limit = 5, skip = 0 } = req.query;
-        const categorys = await Category.find().limit(limit).skip(skip).where({status: true});
+        const categorys = await Category.find().limit(limit).skip(skip).where({ status: true });
         if (categorys.length === 0) return res.status(404).send({ success: false, message: 'Category not found' });
         return res.send({ success: true, message: 'Categorys found', categorys });
     } catch (e) {
@@ -29,7 +41,7 @@ export const getAllCategory = async (req, res) => {
 export const getOneCategory = async (req, res) => {
     try {
         const { id } = req.body;
-        const category = await Category.findById(id).where({status: true});
+        const category = await Category.findById(id).where({ status: true });
         if (!category) return res.status(404).send({ success: false, message: 'Category not found' });
         return res.send({ success: true, message: 'Category found', category });
     } catch (e) {
