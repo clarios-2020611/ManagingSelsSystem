@@ -2,7 +2,7 @@ import Invoice from '../../models/invoice/invoice.model.js';
 import Cart from '../../models/cart/cart.model.js';
 import User from '../../models/user/user.model.js';
 import Product from '../../models/product/product.model.js';
-import { availableStock, objectIdValid } from "../../../helpers/db.validator.js";
+import { objectIdValid } from "../../../helpers/db.validator.js";
 
 
 export const getInvoiceByCliente = async (req, res) => {
@@ -37,14 +37,14 @@ export const generateInvoiceFromCart = async (req, res) => {
         objectIdValid(client);
         const user = await User.findOne({ _id: client, status: true });
         if (!user) return res.status(404).send({ success: false, message: 'User not found' });
-        const cart = await Cart.findOne({ user: client });
+        const cart = await Cart.findOne({ user: client }).populate('items.product');
         if (!cart || cart.items.length === 0) return res.status(404).send({ success: false, message: 'Cart not found or empty' });
         if (!['credit_card', 'debit_card', 'cash', 'transfer'].includes(paymentMethod)) return res.status(400).send({ success: false, message: 'Invalid payment method' });
         const invoiceNumber = `INV-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
         const invoiceItems = [];
         let subtotal = 0;
         for (const item of cart.items) {
-            const product = await Product.findByIdAndUpdate(item.product._id, { $inc: {salesCount: item.quantity} }, { new: true });
+            const product = await Product.findById(item.product._id);
             if (!product) {
                 return res.status(404).send({
                     success: false,
@@ -58,12 +58,12 @@ export const generateInvoiceFromCart = async (req, res) => {
                     message: `Not enough stock for product ${product.name}. Available: ${product.stock}`
                 });
             }
-            const itemSubtotal = product.prace * item.quantity;
+            const itemSubtotal = product.price * item.quantity;
             subtotal += itemSubtotal;
             invoiceItems.push({
-                product: product._id,
+                productId: product._id,
                 quantity: item.quantity,
-                price: product.prace,
+                price: product.price,
                 subtotal: itemSubtotal
             });
             await Product.findByIdAndUpdate(product._id, {
@@ -90,20 +90,31 @@ export const generateInvoiceFromCart = async (req, res) => {
     }
 };
 
-export const updateInvoice = async (req, res) => {
+export const updateInvoicePaymentStatus = async (req, res) => {
     try {
-        let { invoice, paymentStatus } = req.body;
-        let newInvoice = await Invoice.findOneAndUpdate({ invoiceNumber: invoice }, { paymentStatus }, { new: true });
-        if (paymentStatus === 'FAILED') { 
-            let products = newInvoice.items.productId
-            for (const product of products){
-                const addToProd = Product.findOneAndUpdate({ _id: product }, {  });
+        const { invoiceId, paymentStatus } = req.body;
+        objectIdValid(invoiceId);
+        const invoice = await Invoice.findById(invoiceId).populate('items.productId');
+        if (!invoice) return res.status(404).send({ success: false, message: 'Invoice not found' });
+        if (invoice.paymentStatus === paymentStatus) return res.status(200).send({ success: true, message: 'No change in payment status', invoice });
+        if (paymentStatus === 'FAILED') {
+            for (const item of invoice.items) {
+                if (item.productId) {
+                    await Product.findByIdAndUpdate(item.productId._id, {
+                        $inc: { stock: item.quantity } // Devolver la cantidad al stock
+                    });
+                }
             }
         }
-        if (!newInvoice) return res.status(404).send({ success: false, message: 'Invoice not found' });
-        return res.send({ success: true, message: `Payment status updated to ${paymentStatus} successfully`  });
+        invoice.paymentStatus = paymentStatus;
+        await invoice.save();
+        return res.status(200).send({
+            success: true,
+            message: `Invoice payment status updated to ${paymentStatus}`,
+            invoice
+        });
     } catch (e) {
         console.error(e);
         return res.status(500).send({ success: false, message: 'General error', error: e.message });
     }
-}
+};
