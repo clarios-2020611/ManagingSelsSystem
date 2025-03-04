@@ -1,0 +1,1165 @@
+{
+	"info": {
+		"_postman_id": "d7eaab92-08a8-4850-a67f-966b472e47aa",
+		"name": "ManagingSelsSystem",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "37978807"
+	},
+	"item": [
+		{
+			"name": "auth",
+			"item": [
+				{
+					"name": "Register",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "name",
+									"value": "Cristian",
+									"type": "text"
+								},
+								{
+									"key": "username",
+									"value": "clarios2",
+									"type": "text"
+								},
+								{
+									"key": "lastname",
+									"value": "Larios",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "clarios-1234@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "Lirios123/*",
+									"type": "text"
+								},
+								{
+									"key": "role",
+									"value": "ADMIN",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{domine}}/register",
+							"host": [
+								"{{domine}}"
+							],
+							"path": [
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let response = pm.response.json();\r",
+									"pm.environment.set(\"authToken\", response.token);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "userLoggin",
+									"value": "gordoñez",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "123HOLA456",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{domine}}/login",
+							"host": [
+								"{{domine}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Admin",
+			"item": [
+				{
+					"name": "Category",
+					"item": [
+						{
+							"name": "SaveCategory",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{authToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "name",
+											"value": "Health & Beauty",
+											"type": "text"
+										},
+										{
+											"key": "description",
+											"value": "Personal care items, cosmetics, vitamins, and wellness products",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{domine}}/v1/admin/addCategory",
+									"host": [
+										"{{domine}}"
+									],
+									"path": [
+										"v1",
+										"admin",
+										"addCategory"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetAll",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{authToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{domine}}/v1/admin/getAll",
+									"host": [
+										"{{domine}}"
+									],
+									"path": [
+										"v1",
+										"admin",
+										"getAll"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetOne",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{authToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "id",
+											"value": "67c515c6e8d742532e405c7e",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{domine}}/v1/admin/getCategory",
+									"host": [
+										"{{domine}}"
+									],
+									"path": [
+										"v1",
+										"admin",
+										"getCategory"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "UpdateCategory",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{authToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "id",
+											"value": "67af54e40eb3e2f671ff4164",
+											"type": "text"
+										},
+										{
+											"key": "name",
+											"value": "Perifericos",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "description",
+											"value": "Personal care items, cosmetics, vitamins, and wellness products",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{domine}}/v1/admin/updateCategory",
+									"host": [
+										"{{domine}}"
+									],
+									"path": [
+										"v1",
+										"admin",
+										"updateCategory"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "DeleteCategory",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{authToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "id",
+											"value": "67c515c6e8d742532e405c7e",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{domine}}/v1/admin/deleteCategory",
+									"host": [
+										"{{domine}}"
+									],
+									"path": [
+										"v1",
+										"admin",
+										"deleteCategory"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Product",
+					"item": [
+						{
+							"name": "SaveProduct",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{authToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "name",
+											"value": "Vitamin C Serum",
+											"type": "text"
+										},
+										{
+											"key": "description",
+											"value": "Anti-aging facial serum with hyaluronic acid",
+											"type": "text"
+										},
+										{
+											"key": "prace",
+											"value": "45",
+											"type": "text"
+										},
+										{
+											"key": "stock",
+											"value": "150",
+											"type": "text"
+										},
+										{
+											"key": "category",
+											"value": "67c50c3698a179101c305e93",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{domine}}/v1/admin/CreateProduct",
+									"host": [
+										"{{domine}}"
+									],
+									"path": [
+										"v1",
+										"admin",
+										"CreateProduct"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetCatalogue",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{authToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{domine}}/v1/admin/getCatalogue",
+									"host": [
+										"{{domine}}"
+									],
+									"path": [
+										"v1",
+										"admin",
+										"getCatalogue"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetProduct",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{authToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "id",
+											"value": "67c5174aab174ff4dd284d8c",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{domine}}/v1/admin/getProduct",
+									"host": [
+										"{{domine}}"
+									],
+									"path": [
+										"v1",
+										"admin",
+										"getProduct"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "updateProduct",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{authToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "id",
+											"value": "67af4e8a0eb3e2f671ff413d",
+											"type": "text"
+										},
+										{
+											"key": "description",
+											"value": "xd",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{domine}}/v1/admin/updateProduct",
+									"host": [
+										"{{domine}}"
+									],
+									"path": [
+										"v1",
+										"admin",
+										"updateProduct"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "DeleteProduct",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{authToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "id",
+											"value": "67c516605ad2613a770d00a3",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{domine}}/v1/admin/deleteProduct",
+									"host": [
+										"{{domine}}"
+									],
+									"path": [
+										"v1",
+										"admin",
+										"deleteProduct"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "AddStock",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{authToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "id",
+											"value": "67af4ebc0eb3e2f671ff4140",
+											"type": "text"
+										},
+										{
+											"key": "stock",
+											"value": "500",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{domine}}/v1/admin/addProduct",
+									"host": [
+										"{{domine}}"
+									],
+									"path": [
+										"v1",
+										"admin",
+										"addProduct"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "RestStock",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{authToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "name",
+											"value": "Vitamin C Serum",
+											"type": "text"
+										},
+										{
+											"key": "quantity",
+											"value": "600",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{domine}}/v1/admin/restProduct",
+									"host": [
+										"{{domine}}"
+									],
+									"path": [
+										"v1",
+										"admin",
+										"restProduct"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "User",
+					"item": [
+						{
+							"name": "CreateUser",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{authToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "name",
+											"value": "{{$randomFirstName}}",
+											"type": "text"
+										},
+										{
+											"key": "lastname",
+											"value": "{{$randomLastName}}",
+											"type": "text"
+										},
+										{
+											"key": "username",
+											"value": "{{$randomUserName}}",
+											"type": "text"
+										},
+										{
+											"key": "email",
+											"value": "{{$randomEmail}}",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "{{$randomPassword}}",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{domine}}/v1/admin/createUser",
+									"host": [
+										"{{domine}}"
+									],
+									"path": [
+										"v1",
+										"admin",
+										"createUser"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "UpdateRole",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{authToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "id",
+											"value": "67c522c479b51645d4186b07",
+											"type": "text"
+										},
+										{
+											"key": "role",
+											"value": "CLIENT",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{domine}}/v1/admin/updateRol",
+									"host": [
+										"{{domine}}"
+									],
+									"path": [
+										"v1",
+										"admin",
+										"updateRol"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "UpdateUser",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{authToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "id",
+											"value": "67c522c479b51645d4186b07",
+											"type": "text"
+										},
+										{
+											"key": "name",
+											"value": "{{$randomFirstName}}",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{domine}}/v1/admin/updateUser",
+									"host": [
+										"{{domine}}"
+									],
+									"path": [
+										"v1",
+										"admin",
+										"updateUser"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "DeleteUser",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{authToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "id",
+											"value": "67c522c479b51645d4186b07",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{domine}}/v1/admin/deleteUser",
+									"host": [
+										"{{domine}}"
+									],
+									"path": [
+										"v1",
+										"admin",
+										"deleteUser"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetUsers",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{authToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{domine}}/v1/admin/getUsers",
+									"host": [
+										"{{domine}}"
+									],
+									"path": [
+										"v1",
+										"admin",
+										"getUsers"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Invoice",
+					"item": [
+						{
+							"name": "UpdateInvoice",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{authToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "invoice",
+											"value": "INV-1741011488148-930",
+											"type": "text"
+										},
+										{
+											"key": "paymentStatus",
+											"value": "FAILED",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{domine}}/v1/admin/updateInvoice",
+									"host": [
+										"{{domine}}"
+									],
+									"path": [
+										"v1",
+										"admin",
+										"updateInvoice"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Client",
+			"item": [
+				{
+					"name": "Cart",
+					"item": [
+						{
+							"name": "Add to cart",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{authToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "product",
+											"value": "67af4ebc0eb3e2f671ff4140",
+											"type": "text"
+										},
+										{
+											"key": "client",
+											"value": "67c5b48d7169f9057f6b7291",
+											"type": "text"
+										},
+										{
+											"key": "quantity",
+											"value": "2",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{domine}}/v1/client/addToCart",
+									"host": [
+										"{{domine}}"
+									],
+									"path": [
+										"v1",
+										"client",
+										"addToCart"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Remove to cart",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{authToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "productId",
+											"value": "67af4ebc0eb3e2f671ff4140",
+											"type": "text"
+										},
+										{
+											"key": "client",
+											"value": "67c5b48d7169f9057f6b7291",
+											"type": "text"
+										},
+										{
+											"key": "quantity",
+											"value": "1",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{domine}}/v1/client/removeToCart",
+									"host": [
+										"{{domine}}"
+									],
+									"path": [
+										"v1",
+										"client",
+										"removeToCart"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Cart",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{authToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "client",
+											"value": "67c5b48d7169f9057f6b7291",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{domine}}/v1/client/getCart",
+									"host": [
+										"{{domine}}"
+									],
+									"path": [
+										"v1",
+										"client",
+										"getCart"
+									],
+									"query": [
+										{
+											"key": "client",
+											"value": "67c5b48d7169f9057f6b7291",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Product",
+					"item": [
+						{
+							"name": "MoreSales",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{authToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{domine}}/v1/client/moreSales",
+									"host": [
+										"{{domine}}"
+									],
+									"path": [
+										"v1",
+										"client",
+										"moreSales"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "User",
+					"item": []
+				},
+				{
+					"name": "Sel",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{authToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "client",
+									"value": "67c5b48d7169f9057f6b7291",
+									"type": "text"
+								},
+								{
+									"key": "paymentMethod",
+									"value": "cash",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{domine}}/v1/client/sel",
+							"host": [
+								"{{domine}}"
+							],
+							"path": [
+								"v1",
+								"client",
+								"sel"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
